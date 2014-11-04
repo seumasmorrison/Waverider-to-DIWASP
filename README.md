@@ -15,4 +15,5 @@ There is an example raw file from cdip in the example folder and a plot shown be
 
 ![Polar Plot of cdip.raw Spectra](https://raw.githubusercontent.com/seumasmorrison/Datawell_RAW_to_DIWASP/master/example/cdip_plot.png)
 
+mean_direction and diwasp_bins_to_DW functions written by [David Christie](http://www.lews.uhi.ac.uk/research-enterprise/contact/dr-david-christie)
 
