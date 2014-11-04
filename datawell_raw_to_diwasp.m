@@ -39,7 +39,7 @@ end
 
 [output_spectra, EP]  = dirspec(ID,SM,EP,{'PLOTTYPE',1});
 index_of_peak_frequency = find(sum(output_spectra.S==max(max(output_spectra.S)),2));
-[output_spectra.S, output_spectra.dirs] = diwasp_bins_to_DW(output_spectra.S, output_spectra.dirs)
+[output_spectra.S, output_spectra.dirs] = diwasp_bins_to_datawell(output_spectra.S, output_spectra.dirs)
 psds_at_peak_frequency = output_spectra.S(index_of_peak_frequency,:);
 mean_dir_pp = mean_direction(real(psds_at_peak_frequency), output_spectra.dirs);
 output_spectra.file_path = file_path;
