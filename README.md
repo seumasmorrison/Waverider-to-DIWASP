@@ -3,7 +3,8 @@ Datawell_RAW_to_DIWASP
 
 A repository for working with Datawell Waverider data in the DIWASP ( DIrectional WAve SPectra ) Matlab Toolbox
 
-This repository uses a modified version of DIWASP found at https://github.com/seumasmorrison/diwasp
+This repository uses a slightly modified version of DIWASP found at https://github.com/seumasmorrison/diwasp
+These changes were made to remove conflict with WAFO namespace clashes and allow easier batch processing of raw files.
 
 **datawell_raw_to_diwasp** takes a path to a Datawell RAW file and produces an output spectra struct.
 
