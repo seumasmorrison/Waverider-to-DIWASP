@@ -1,4 +1,4 @@
-function output_spectra = datawell_raw_to_diwasp(file_path, output_dir, visible)
+function output_spectra = datawell_raw_to_diwasp(file_path, output_dir, visible, method)
 % read the raw file data into a matrix stripping signal quality info
 try
     raw_matrix = csvread(file_path);
@@ -32,7 +32,11 @@ EP = [];
 EP.nfft = 256;
 EP.iter = 100;
 EP.smooth = 'ON';
-EP.method = 'EMLM';
+EP.method = 'IMLM';
+if nargin == 4,
+    EP.method = method;
+end
+
 [output_spectra, EP]  = dirspec(ID,SM,EP,{'PLOTTYPE',1});
 index_of_peak_frequency = find(sum(output_spectra.S==max(max(output_spectra.S)),2));
 [output_spectra.S, output_spectra.dirs] = diwasp_bins_to_DW(output_spectra.S, output_spectra.dirs)
