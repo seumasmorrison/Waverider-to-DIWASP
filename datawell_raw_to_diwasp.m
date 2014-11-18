@@ -1,5 +1,6 @@
 function output_spectra = datawell_raw_to_diwasp(file_path, output_dir, visible, method)
 % read the raw file data into a matrix stripping signal quality info
+disp(file_path)
 try
     raw_matrix = csvread(file_path);
 catch err
@@ -24,7 +25,12 @@ ID.layout = [0 0 depth;0 0 depth;0 0 depth]';
 ID.fs = 1.28;
 ID.depth = depth;
 %SM   		A spectral matrix structure
-SM.freqs = [0.02:0.002:0.58];
+%period = [30:0.2:1];
+%SM.freqs = period.^(-1)
+%Freqs below represent the binnings from the large spectral files
+%SM.freqs = [0.025:0.005:0.635];
+%Freqs below represent the binnings from the small spectral files
+SM.freqs = cat(2,[0.04:0.005:0.1],[0.11:0.01:0.58]);
 SM.dirs = [-180:1:180];
 SM.xaxisdir = 0;
 EP = [];
@@ -37,9 +43,9 @@ if nargin == 4,
     EP.method = method;
 end
 
-[output_spectra, EP]  = dirspec(ID,SM,EP,{'PLOTTYPE',1});
+[output_spectra, EP] = dirspec(ID,SM,EP,{'PLOTTYPE',0});
 index_of_peak_frequency = find(sum(output_spectra.S==max(max(output_spectra.S)),2));
-[output_spectra.S, output_spectra.dirs] = diwasp_bins_to_datawell(output_spectra.S, output_spectra.dirs)
+[output_spectra.S, output_spectra.dirs] = diwasp_bins_to_DW(output_spectra.S, output_spectra.dirs);
 psds_at_peak_frequency = output_spectra.S(index_of_peak_frequency,:);
 mean_dir_pp = mean_direction(real(psds_at_peak_frequency), output_spectra.dirs);
 output_spectra.file_path = file_path;
@@ -59,4 +65,5 @@ output_spectra.mean_dir_pp = mean_dir_pp;
 output_spectra.psds_at_peak_frequency = psds_at_peak_frequency;
 output_spectra.index_of_peak_frequency = index_of_peak_frequency;
 output_spectra.raw_matrix = raw_matrix;
+output_spectra.energy_period = energy_period(SM.freqs,output_spectra.S);
 output_spectra.datatypes = ID.datatypes;
