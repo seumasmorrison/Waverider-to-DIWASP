@@ -1,4 +1,5 @@
-function output_spectra = datawell_raw_to_diwasp(file_path, output_dir, visible, method)
+function output_spectra = datawell_raw_to_diwasp(file_path, output_dir,...
+                                                 visible, method, mask)
 % read the raw file data into a matrix stripping signal quality info
 disp(file_path)
 try
@@ -16,6 +17,13 @@ if length(raw_matrix) < 256,
 end
 %raw_matrix(:,2) = -1 * raw_matrix(:,2);
 raw_matrix(:,3) = -1 * raw_matrix(:,3);
+if nargin == 5,
+    if mask == 'Mask',
+        mask = raw_matrix(:,1)==0;
+        raw_matrix = [raw_matrix(mask,1) raw_matrix(mask,2)... 
+                      raw_matrix(mask,3) raw_matrix(mask,4)];
+    end
+end
 ID.data = raw_matrix(:,2:4);
 %define the nature of the values elev - heave, dspx - north, dspy - west 
 ID.datatypes = {'elev','dspy','dspx'};
@@ -39,7 +47,7 @@ EP.nfft = 256;
 EP.iter = 100;
 EP.smooth = 'ON';
 EP.method = 'IMLM';
-if nargin == 4,
+if nargin > 3,
     EP.method = method;
 end
 
