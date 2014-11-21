@@ -19,11 +19,19 @@ end
 raw_matrix(:,3) = -1 * raw_matrix(:,3);
 if nargin == 5,
     if mask == 'Mask',
-        mask = raw_matrix(:,1)==0;
-        raw_matrix = [raw_matrix(mask,1) raw_matrix(mask,2)... 
-                      raw_matrix(mask,3) raw_matrix(mask,4)];
+        find_zero = diff(sign(raw_matrix(:,2)));
+        indx_up = find(find_zero>0); %find all upward going zeros
+        masked_raw = [];
+        for x=2:length(indx_up),
+            if sum(raw_matrix(indx_up(x-1):indx_up(x),1)) == 0,
+                masked_raw = vertcat(masked_raw(1:size(masked_raw,1)-1,:),...
+                                     raw_matrix(indx_up(x-1):indx_up(x),:));
+            end
+        end
+        raw_matrix = masked_raw;
     end
 end
+
 ID.data = raw_matrix(:,2:4);
 %define the nature of the values elev - heave, dspx - north, dspy - west 
 ID.datatypes = {'elev','dspy','dspx'};
