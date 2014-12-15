@@ -1,4 +1,4 @@
-Datawell_RAW_to_DIWASP
+Waverider-to-DIWASP
 ======================
 
 A repository for working with Datawell Waverider data in the DIWASP ( DIrectional WAve SPectra ) Matlab Toolbox
